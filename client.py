@@ -54,11 +54,13 @@ if __name__ == "__main__":
         quotes = json.loads(urllib.request.urlopen(QUERY.format(random.random())).read())
 
         """ ----------- Update to get the ratio --------------- """
-        prices = {}
+
+        price_1 = price_2 = None
 
         for quote in quotes:
             stock, bid_price, ask_price, price = getDataPoint(quote)
             print("Quoted %s at (bid:%s, ask:%s, price:%s)" % (stock, bid_price, ask_price, price))
-            prices[stock] = price
+            price_1 = price if price_1 is None else price_1
+            price_2 = price if price_1 != price else price_2
 
-        print("Ratio %s" % getRatio(prices["ABC"], prices["DEF"]))
+        print("Ratio %s" % getRatio(price_1, price_2))
